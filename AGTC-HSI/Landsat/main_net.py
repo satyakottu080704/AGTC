@@ -107,7 +107,7 @@ class RPCA_Block(nn.Module):
         # Update T
         Y = Omega - C_k - E_k + L1 / self.mu
         T_k = torch.mul(Y, Omega_C) + \
-              torch.mul(Y, Omega) * torch.min(torch.tensor(1.).cuda(), \
+              torch.mul(Y, Omega) * torch.min(torch.tensor(1., device=Y.device), \
                         self.delta / (torch.norm(torch.mul(Y, Omega), 'fro') + 1e-6))
 
         # Update P
@@ -143,9 +143,12 @@ class RPCA_Net(nn.Module):
 
     def forward(self, data, omega):
 
+        # Get device from input data
+        device = data.device
+        
         # Observation
         OmegaD = data
-        Omega_C = torch.tensor(1.).cuda() -  omega
+        Omega_C = torch.tensor(1., device=device) - omega
 
         # Weight W for reweigted least-squares
         W = self.att_module(OmegaD)
@@ -153,16 +156,16 @@ class RPCA_Net(nn.Module):
         # Optimal variables
         OmegaD = torch.mul(OmegaD, omega)
         C  = OmegaD
-        L1 = torch.zeros(C.size(), device=torch.device('cuda'))
-        L2 = torch.zeros(C.size(), device=torch.device('cuda'))
-        L3 = torch.zeros(C.size(), device=torch.device('cuda'))
-        E  = torch.zeros(C.size(), device=torch.device('cuda'))
-        T  = torch.zeros(C.size(), device=torch.device('cuda'))
-        P  = torch.zeros(C.size(), device=torch.device('cuda'))
-        Q  = torch.zeros(C.size(), device=torch.device('cuda'))
+        L1 = torch.zeros(C.size(), device=device)
+        L2 = torch.zeros(C.size(), device=device)
+        L3 = torch.zeros(C.size(), device=device)
+        E  = torch.zeros(C.size(), device=device)
+        T  = torch.zeros(C.size(), device=device)
+        P  = torch.zeros(C.size(), device=device)
+        Q  = torch.zeros(C.size(), device=device)
         # Init L/R
-        L = torch.ones((self.tensor_num_channels, 2, OmegaD.shape[-1]), device=torch.device('cuda')) / 1e2
-        R = torch.ones((2, OmegaD.shape[-2], OmegaD.shape[-1]), device=torch.device('cuda')) / 1e2
+        L = torch.ones((self.tensor_num_channels, 2, OmegaD.shape[-1]), device=device) / 1e2
+        R = torch.ones((2, OmegaD.shape[-2], OmegaD.shape[-1]), device=device) / 1e2
 
         # Main net
         layers = []

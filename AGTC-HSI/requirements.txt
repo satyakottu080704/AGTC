@@ -1,0 +1,36 @@
+# AGTC-HSI Requirements
+# Hyperspectral Image Restoration using AGTC Model
+
+# Web Framework
+Flask>=2.3.0
+Flask-CORS>=4.0.0
+gunicorn>=21.2.0
+
+# Core Deep Learning
+torch>=1.10.0
+torchvision>=0.11.0
+
+# Scientific Computing
+numpy>=1.19.0
+scipy>=1.5.0
+
+# Data I/O
+h5py>=3.1.0
+Pillow>=8.0.0
+
+# Progress and Visualization
+tqdm>=4.50.0
+
+# Model Summary
+torchinfo>=1.5.0
+
+# Image Quality Metrics
+scikit-image>=0.18.0
+
+# Optional but recommended
+matplotlib>=3.3.0
+opencv-python>=4.5.0
+
+# For EXR support (if needed)
+# OpenEXR>=1.3.2
+# Imath>=0.0.1

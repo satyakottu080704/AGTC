@@ -1,8 +1,0 @@
-demos/output
-*.mexw64
-*.asv
-*.mexmaci64
-
-source_code/Tools/fc_colormap.png
-
-source_code/Tools/test.png
